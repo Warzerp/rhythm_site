@@ -11,7 +11,6 @@ Plataforma web para la gestión y venta de entradas a eventos musicales en Colom
 - [Clonar el Repositorio](#-clonar-el-repositorio)
 - [Instalar la Base de Datos](#-instalar-la-base-de-datos)
 - [Reinstalación Completa](#-reinstalación-completa)
-- [Estrategia de Ramas](#-estrategia-de-ramas)
 
 ---
 
@@ -72,11 +71,6 @@ cd rhythm_site
 > git clone https://github.com/Warzerp/rhythm_site.git
 > ```
 
-### Cambiar a la rama de desarrollo
-
-```bash
-git checkout develop
-```
 
 ---
 
@@ -141,24 +135,3 @@ DROP ROLE rhythm_admin;
 ```
 
 Luego vuelve al **Paso 2** del apartado anterior.
-
----
-
-## 🌿 Estrategia de Ramas
-
-El flujo de trabajo sigue el modelo **GitFlow simplificado**:
-
-```
-feature/Jhon_M  ──┐
-feature/xxx     ──┤──► develop ──► qa ──► main
-feature/yyy     ──┘
-```
-
-| Rama | Propósito |
-|------|-----------|
-| `main` | Producción — protegida, requiere Pull Request aprobado |
-| `qa` | Control de calidad y pruebas de integración |
-| `develop` | Integración continua del equipo |
-| `feature/*` | Desarrollo individual por funcionalidad o miembro |
-
-> ⚠️ **`main` está protegida.** No se permite `push` directo. Todo cambio debe pasar por Pull Request y ser aprobado por el dueño del repositorio.
