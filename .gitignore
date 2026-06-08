@@ -1,0 +1,41 @@
+# =========================================
+# .gitignore — rhythm_site
+# =========================================
+
+# ── Documentos de Office ─────────────────
+*.docx
+*.xlsx
+*.pptx
+*.pdf
+
+# ── Entornos virtuales Python ────────────
+venv/
+.venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.egg-info/
+dist/
+build/
+
+# ── Variables de entorno / Secrets ───────
+.env
+.env.*
+*.env
+
+# ── Sistemas operativos ──────────────────
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# ── IDEs y editores ──────────────────────
+.vscode/
+.idea/
+*.suo
+*.user
+
+# ── Logs ─────────────────────────────────
+*.log
+logs/
