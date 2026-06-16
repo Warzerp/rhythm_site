@@ -6,7 +6,7 @@
 # Desde: pipelines/01-create-database/
 
 # Primer Script
-python .\01-create-database\01-sql-ddl-script-auto.py --sql-dir ../ddl --user postgres --password "*" --host localhost --port 5432 --database postgres --create-script true
+python .\01-create-database\01-sql-ddl-script-auto.py --sql-dir ../ddl --user postgres --password "*" --host localhost --port 5432
 
 # Segundo Script
-python .\02-insert-data\02-sql-dml-insert-auto.py --data-dir ../data --user postgres --password "*" --host localhost --port 5432 --database rhythm_site
+python .\02-insert-data\02-sql-dml-insert-auto.py --data-dir ../data --user postgres --password "040922" --host localhost --port 5432

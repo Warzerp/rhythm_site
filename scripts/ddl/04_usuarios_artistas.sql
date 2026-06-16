@@ -8,18 +8,18 @@
 
 CREATE TABLE usuarios (
     id                  SERIAL PRIMARY KEY,
-    nombre              VARCHAR(100) NOT NULL,
-    apellido            VARCHAR(100) NOT NULL,
+    nombre              VARCHAR(100),
+    apellido            VARCHAR(100),
     nick                VARCHAR(50),
-    correo_id           INT,
-    contrasena          VARCHAR(255) NOT NULL,
-    rol_cuenta          INT,
-    activo              BOOLEAN DEFAULT TRUE,
-    telefono_usuario_id INT,
+    contrasena          VARCHAR(255),
+    activo              BOOLEAN,
     fecha_nacimiento    DATE,
-    foto_perfil_png     VARCHAR(255),
+    foto_perfil         VARCHAR(255),
+    rol_cuenta          INT,
+    correo_usuarios_id  INT,
+    telefono_usuario_id INT,
     FOREIGN KEY (rol_cuenta)          REFERENCES rol_cuentas(id),
-    FOREIGN KEY (correo_id)           REFERENCES correo_usuarios(id),
+    FOREIGN KEY (correo_usuarios_id)  REFERENCES correo_usuarios(id),
     FOREIGN KEY (telefono_usuario_id) REFERENCES telefono_usuarios(id)
 );
 
@@ -29,14 +29,14 @@ CREATE TABLE usuarios (
 
 CREATE TABLE artistas (
     id                  SERIAL PRIMARY KEY,
-    nombre              VARCHAR(100) NOT NULL,
+    nombre              VARCHAR(100),
     nombre_artistico    VARCHAR(100),
+    activo              BOOLEAN,
+    biografia           TEXT,
     correo_artista_id   INT,
     telefono_artista_id INT,
     pais_de_origen_id   INT,
     tipo_id             INT,
-    activo              BOOLEAN DEFAULT TRUE,
-    biografia           TEXT,
     FOREIGN KEY (correo_artista_id)   REFERENCES correo_artistas(id),
     FOREIGN KEY (telefono_artista_id) REFERENCES telefono_artistas(id),
     FOREIGN KEY (pais_de_origen_id)   REFERENCES paises(id),

@@ -8,7 +8,7 @@
 
 CREATE TABLE rol_cuentas (
     id     SERIAL PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL
+    nombre VARCHAR(50)
 );
 
 -- =========================================
@@ -17,7 +17,7 @@ CREATE TABLE rol_cuentas (
 
 CREATE TABLE clasificaciones (
     id     SERIAL PRIMARY KEY,
-    nombre VARCHAR(50) NOT NULL
+    nombre VARCHAR(50)
 );
 
 -- =========================================
@@ -26,7 +26,7 @@ CREATE TABLE clasificaciones (
 
 CREATE TABLE paises (
     id     SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL
+    nombre VARCHAR(100)
 );
 
 -- =========================================
@@ -35,7 +35,7 @@ CREATE TABLE paises (
 
 CREATE TABLE departamentos (
     departamento_id     SERIAL PRIMARY KEY,
-    nombre_departamento VARCHAR(100) NOT NULL
+    nombre_departamento VARCHAR(100)
 );
 
 -- =========================================
@@ -44,7 +44,7 @@ CREATE TABLE departamentos (
 
 CREATE TABLE municipio (
     municipio_id     SERIAL PRIMARY KEY,
-    nombre_municipio VARCHAR(100) NOT NULL
+    nombre_municipio VARCHAR(100)
 );
 
 -- =========================================
@@ -53,7 +53,7 @@ CREATE TABLE municipio (
 
 CREATE TABLE ciudad (
     ciudad_id     SERIAL PRIMARY KEY,
-    ciudad_nombre VARCHAR(100) NOT NULL
+    ciudad_nombre VARCHAR(100)
 );
 
 -- =========================================
@@ -62,7 +62,7 @@ CREATE TABLE ciudad (
 
 CREATE TABLE tipo_evento (
     id     SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL
+    nombre VARCHAR(100)
 );
 
 -- =========================================
@@ -71,7 +71,7 @@ CREATE TABLE tipo_evento (
 
 CREATE TABLE tipo_tickets (
     id   SERIAL PRIMARY KEY,
-    tipo VARCHAR(50) NOT NULL
+    tipo VARCHAR(50)
 );
 
 -- =========================================
@@ -80,7 +80,7 @@ CREATE TABLE tipo_tickets (
 
 CREATE TABLE generos (
     id     SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL
+    nombre VARCHAR(100)
 );
 
 -- =========================================
@@ -89,16 +89,7 @@ CREATE TABLE generos (
 
 CREATE TABLE tipos_artista (
     id     SERIAL PRIMARY KEY,
-    nombre VARCHAR(100) NOT NULL
-);
-
--- =========================================
--- TABLA ASIENTOS
--- =========================================
-
-CREATE TABLE asientos (
-    id      SERIAL PRIMARY KEY,
-    asiento VARCHAR(20) NOT NULL
+    nombre VARCHAR(100)
 );
 
 -- NOTA: Los INSERTs de estas tablas están centralizados
