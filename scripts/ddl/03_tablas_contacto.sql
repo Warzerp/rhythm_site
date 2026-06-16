@@ -8,7 +8,7 @@
 
 CREATE TABLE correo_usuarios (
     id               SERIAL PRIMARY KEY,
-    correo           VARCHAR(150) NOT NULL UNIQUE,
+    correo           VARCHAR(150),
     clasificacion_id INT,
     FOREIGN KEY (clasificacion_id) REFERENCES clasificaciones(id)
 );
@@ -30,8 +30,8 @@ CREATE TABLE telefono_usuarios (
 
 CREATE TABLE correo_artistas (
     id               SERIAL PRIMARY KEY,
+    correo           VARCHAR(150),
     clasificacion_id INT,
-    correo           VARCHAR(150) NOT NULL UNIQUE,
     FOREIGN KEY (clasificacion_id) REFERENCES clasificaciones(id)
 );
 
@@ -53,7 +53,7 @@ CREATE TABLE telefono_artistas (
 CREATE TABLE correo_organizadores (
     id                 SERIAL PRIMARY KEY,
     clasificacion_id   INT,
-    correo_organizador VARCHAR(150) NOT NULL UNIQUE,
+    correo_organizador VARCHAR(150),
     FOREIGN KEY (clasificacion_id) REFERENCES clasificaciones(id)
 );
 
@@ -63,23 +63,25 @@ CREATE TABLE correo_organizadores (
 
 CREATE TABLE telefono_organizadores (
     id               SERIAL PRIMARY KEY,
-    clasificacion_id INT,
     telefono         VARCHAR(20),
+    clasificacion_id INT,
     FOREIGN KEY (clasificacion_id) REFERENCES clasificaciones(id)
 );
 
 -- =========================================
 -- TABLA DIRECCIONES
--- FIX: Eliminadas columnas fantasma sin FK
---      (direccion_organizadores_id, direcciones_venues_id)
+-- Nota: direccion_organizadores_id y direcciones_venues_id
+--       son columnas de referencia presentes en el schema real.
 -- =========================================
 
 CREATE TABLE direcciones (
-    id               SERIAL PRIMARY KEY,
-    clasificacion_id INT,
-    departamento_id  INT,
-    municipio_id     INT,
-    ciudad_id        INT,
+    id                       SERIAL PRIMARY KEY,
+    clasificacion_id         INT,
+    departamento_id          INT,
+    municipio_id             INT,
+    ciudad_id                INT,
+    direccion_organizadores_id INT,
+    direcciones_venues_id    INT,
     FOREIGN KEY (clasificacion_id) REFERENCES clasificaciones(id),
     FOREIGN KEY (departamento_id)  REFERENCES departamentos(departamento_id),
     FOREIGN KEY (municipio_id)     REFERENCES municipio(municipio_id),
@@ -92,8 +94,8 @@ CREATE TABLE direcciones (
 
 CREATE TABLE direcciones_organizador (
     id              SERIAL PRIMARY KEY,
-    direccion_id    INT,
     linea_direccion VARCHAR(255),
+    direccion_id    INT,
     FOREIGN KEY (direccion_id) REFERENCES direcciones(id)
 );
 
