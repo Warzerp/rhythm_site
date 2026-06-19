@@ -99,7 +99,7 @@ Una vez activo, verás `(venv)` al inicio de la línea de tu terminal.
 ### 4. Instalar las dependencias necesarias
 Instala las librerías necesarias del proyecto especificando la ruta al archivo `requirements.txt` ubicado en la raíz del espacio de trabajo:
 ```cmd
-pip install -r ..\..\requirements.txt
+pip install -r requirements.txt
 ```
 
 ### 5. Ejecutar la creación de la base de datos (DDL)
