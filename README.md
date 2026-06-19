@@ -87,20 +87,12 @@ python -m venv venv
 ```
 
 ### 3. Activa el entorno virtual (`venv`)
-Dependiendo de tu sistema operativo y shell, ejecuta:
-
-*   **En Windows (PowerShell - Recomendado):**
-    ```powershell
-    .\venv\Scripts\Activate.ps1
-    ```
+ ejecuta:
 *   **En Windows (Símbolo del sistema / cmd):**
     ```cmd
-    .\venv\Scripts\activate.bat
-    ```
-*   **En Linux / macOS:**
-    ```bash
-    source venv/bin/activate
-    ```
+    .\venv\Scripts\activate
+    
+
 
 Una vez activo, verás `(venv)` al inicio de la línea de tu terminal.
 
