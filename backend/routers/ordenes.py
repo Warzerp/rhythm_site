@@ -3,7 +3,7 @@ from pydantic import BaseModel
 from database import get_db, parse_pg_error
 import psycopg2
 
-router = APIRouter(tags=["Ordenes"])
+router = APIRouter(prefix="/ordenes", tags=["Ordenes"])
 
 
 class CompraRequest(BaseModel):
