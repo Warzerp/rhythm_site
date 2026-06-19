@@ -15,6 +15,9 @@ import argparse
 # Orden de ejecución de los scripts SQL de datos
 # Respeta el orden de dependencias de llaves foráneas
 DATA_FILES = [
+    ("00_rol_cuentas.sql",            "Roles de Cuentas",             "rhythm_site"),
+    ("00_clasificaciones.sql",        "Clasificaciones",              "rhythm_site"),
+    ("00_tipo_tickets.sql",           "Tipos de Tickets",             "rhythm_site"),
     ("01_paises.sql",                 "Paises",                      "rhythm_site"),
     ("02_departamentos.sql",          "Departamentos",                "rhythm_site"),
     ("03_municipio.sql",              "Municipios",                   "rhythm_site"),
@@ -68,7 +71,7 @@ def connect_postgres(host, port, user, password, dbname="rhythm_site"):
 
 
 def parse_sql_file(filepath):
-    """Lee un archivo SQL y lo divide en sentencias individuales."""
+    """Lee un archivo SQL y lo divide en sentencias individuales, soportando bloques $$."""
     try:
         with open(filepath, "r", encoding="utf-8") as f:
             sql = f.read()
@@ -79,22 +82,32 @@ def parse_sql_file(filepath):
 
     statements = []
     buffer = ""
+    in_dollar_quote = False
 
     for line in sql.splitlines():
         stripped = line.strip()
         if not stripped or stripped.startswith("--"):
             continue
-        # Elimina comentarios inline (-- ...) para no bloquear la deteccion de ;
+        
+        # Eliminar comentarios de fin de línea
         if " --" in stripped:
             stripped = stripped[:stripped.index(" --")].rstrip()
+            
         if not stripped:
             continue
-        buffer += " " + stripped
-        if stripped.endswith(";"):
+
+        buffer += "\n" + stripped
+        
+        # Cambiar el estado de la cita de dólar si la línea tiene un número impar de $$
+        dollar_count = stripped.count("$$")
+        if dollar_count % 2 == 1:
+            in_dollar_quote = not in_dollar_quote
+            
+        if stripped.endswith(";") and not in_dollar_quote:
             statements.append(buffer.strip())
             buffer = ""
 
-    return statements
+    return [s for s in statements if s]
 
 
 def execute_statements(conn, statements):
@@ -127,7 +140,7 @@ def run_script(filepath, description, dbname, host, port, user, password):
         conn.autocommit = True
         print(f"  Ejecutando {len(statements)} sentencia(s)...")
         execute_statements(conn, statements)
-        print(f"  ✓ Completado: {description}")
+        print(f"  [OK] Completado: {description}")
     except psycopg2.OperationalError as e:
         print(f"  Error de conexion: {e}")
         sys.exit(1)

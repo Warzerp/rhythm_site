@@ -223,14 +223,14 @@ INSERT INTO ticket (precio, cantidad, tipo_ticket_id, evento_id) VALUES
     (70000.00,  2000, 1, 5),
     (150000.00,  150, 3, 5);
 
-INSERT INTO ordenes (cantidad, fecha_compra, estado_pago, usuario_id) VALUES
-    (2, '2025-05-10', 'pagado',   1),
-    (4, '2025-05-11', 'pagado',   2),
-    (2, '2025-05-12', 'pagado',   3),
-    (1, '2025-05-13', 'pagado',   4),
-    (3, '2025-05-14', 'pagado',   5),
-    (2, '2025-05-15', 'pagado',   6),
-    (1, '2025-05-16', 'pendiente',7),
-    (1, '2025-05-17', 'pagado',   8),
-    (2, '2025-05-18', 'pagado',   1),
-    (2, '2025-05-19', 'pendiente',2);
+INSERT INTO ordenes (cantidad, fecha_compra, estado_pago, usuario_id, ticket_id) VALUES
+    (2, '2025-05-10', 'pagado',   1, 1),
+    (4, '2025-05-11', 'pagado',   2, 2),
+    (2, '2025-05-12', 'pagado',   3, 3),
+    (1, '2025-05-13', 'pagado',   4, 4),
+    (3, '2025-05-14', 'pagado',   5, 5),
+    (2, '2025-05-15', 'pagado',   6, 6),
+    (1, '2025-05-16', 'pendiente',7, 7),
+    (1, '2025-05-17', 'pagado',   8, 8),
+    (2, '2025-05-18', 'pagado',   1, 9),
+    (2, '2025-05-19', 'pendiente',2, 10);

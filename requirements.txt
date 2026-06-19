@@ -1,0 +1,6 @@
+fastapi==0.111.0
+uvicorn[standard]==0.29.0
+python-multipart==0.0.9
+psycopg2-binary==2.9.12
+requests==2.34.2
+tqdm==4.68.2

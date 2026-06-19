@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Detalles del Evento — Rhythm Site</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">Rhythm<span>Site</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Eventos</a></li>
+        </ul>
+        <div id="nav-actions"></div>
+    </nav>
+
+    <div class="detail-banner" id="event-banner">
+        <div class="detail-header-content">
+            <span id="event-type-badge" class="card-badge" style="position: static; margin-bottom: 1rem; display: inline-block;">...</span>
+            <h1 class="detail-title" id="event-title">Cargando evento...</h1>
+            <div class="card-meta" id="event-meta">
+                <!-- Meta dynamic details -->
+            </div>
+        </div>
+    </div>
+
+    <main class="container">
+        <div class="detail-layout">
+            <!-- Left Column: Details & Artists -->
+            <div>
+                <section class="detail-section">
+                    <h2>Acerca del Evento</h2>
+                    <p id="event-description" style="color: var(--text-muted); font-size: 1.05rem;">
+                        Cargando detalles descriptivos del show...
+                    </p>
+                </section>
+
+                <section class="detail-section">
+                    <h2>Artistas en Escena</h2>
+                    <div class="artists-list" id="artists-container">
+                        <!-- Artists injected by js -->
+                    </div>
+                </section>
+            </div>
+
+            <!-- Right Column: Tickets -->
+            <div>
+                <section class="detail-section" style="position: sticky; top: 100px;">
+                    <h2>Entradas Disponibles</h2>
+                    <div id="tickets-container">
+                        <div style="text-align: center; color: var(--text-muted); padding: 1.5rem;">
+                            Buscando ubicaciones disponibles...
+                        </div>
+                    </div>
+                </section>
+            </div>
+        </div>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/evento.js"></script>
+</body>
+</html>
