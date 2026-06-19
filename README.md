@@ -143,7 +143,7 @@ Para evitar restricciones de CORS del navegador al abrir archivos HTML locales d
 ### 1. Abre una nueva terminal en la carpeta `frontend/`
 Muévete a la carpeta `frontend` del proyecto:
 ```cmd
-cd pruebas__sub/frontend
+cd rhythm_site/frontend
 ```
 
 ### 2. Inicia el servidor de prueba de Python
