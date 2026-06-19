@@ -9,7 +9,9 @@ Plataforma web para la gestión y venta de entradas a eventos musicales en Colom
 - [Tecnologías](#-tecnologías)
 - [Estructura del Proyecto](#-estructura-del-proyecto)
 - [Clonar el Repositorio](#-clonar-el-repositorio)
-- [Instalar la Base de Datos](#-instalar-la-base-de-datos)
+- [Instalar la Base de Datos (Paso a Paso Exacto)](#-instalar-la-base-de-datos-paso-a-paso-exacto)
+- [Ejecutar el Servidor Backend (FastAPI + Uvicorn)](#-ejecutar-el-servidor-backend-fastapi--uvicorn)
+- [Ejecutar el Frontend](#-ejecutar-el-frontend)
 - [Reinstalación Completa](#-reinstalación-completa)
 
 ---
@@ -19,34 +21,34 @@ Plataforma web para la gestión y venta de entradas a eventos musicales en Colom
 | Capa | Tecnología |
 |------|-----------|
 | Base de datos | PostgreSQL |
-| Scripts de migración | Python 3.8+ (`psycopg2-binary`, `tqdm`) |
-| Control de versiones | Git / GitHub |
+| Backend | FastAPI (Python 3.14 / 3.8+) |
+| Frontend | HTML5 + CSS3 (Vanilla) + JavaScript (ES6) |
+| Servidor Web | Uvicorn |
 
 ---
 
 ## 📁 Estructura del Proyecto
 
 ```
-rhythm_site/
-├── scripts/
-│   ├── ddl/                          # Creación de tablas (ejecutar en orden)
-│   │   ├── 01_create_database.sql
-│   │   ├── 02_tablas_no_gestionables.sql
-│   │   ├── 03_tablas_contacto.sql
-│   │   ├── 04_usuarios_artistas.sql
-│   │   ├── 05_organizadores_venues.sql
-│   │   ├── 06_eventos.sql
-│   │   └── 07_tickets_ordenes.sql
-│   ├── data/                         # Datos de prueba
-│   │   └── 08_inserts_datos.sql
-│   └── pipelines/                    # Automatización de despliegue
-│       ├── 01-create-database/
-│       │   ├── 01-sql-ddl-script-auto.py
-│       │   └── execute_command.sh
-│       └── 02-insert-data/
-│           ├── 02-sql-dml-insert-auto.py
-│           └── execute_command.sh
-└── README.md
+pruebas__sub/
+├── requirements.txt                  # Librerías de todo el proyecto (FastAPI, psycopg2, etc.)
+├── rhythm_site/                      # Carpeta principal de la base de datos
+│   ├── scripts/
+│   │   ├── ddl/                      # Estructura de base de datos (01 a 12)
+│   │   ├── data/                     # Datos de prueba (01 a 25)
+│   │   └── pipelines/                # Scripts automatizados de instalación
+│   └── README.md                     # Este archivo
+├── backend/                          # API REST en FastAPI
+│   ├── main.py                       # Servidor de entrada
+│   ├── database.py                   # Conexión psycopg2 a la BD
+│   └── routers/                      # Módulos de endpoints (eventos, usuarios, etc.)
+└── frontend/                         # Aplicación Web cliente (Estética premium oscura)
+    ├── index.html                    # Inicio (Próximos eventos)
+    ├── auth.html                     # Login y registro de usuarios
+    ├── evento.html                   # Detalle del evento y compra de entradas
+    ├── perfil.html                   # Historial del cliente (Consumido de vistas de la BD)
+    ├── css/style.css                 # Diseño responsivo y glassmorphism
+    └── js/                           # Lógica del cliente
 ```
 
 ---
@@ -57,81 +59,124 @@ rhythm_site/
 
 - [Git](https://git-scm.com/) instalado
 - [Python 3.8+](https://www.python.org/) instalado
-- [PostgreSQL](https://www.postgresql.org/) instalado y corriendo
+- [PostgreSQL](https://www.postgresql.org/) instalado y corriendo en el puerto `5432` con usuario `postgres` y contraseña (por ejemplo, `040922` u otra).
 
 ### Clonar
 
 ```bash
-git clone git@github.com:Warzerp/rhythm_site.git
+git clone https://github.com/Warzerp/rhythm_site.git
 cd rhythm_site
 ```
 
-> Si no tienes configurada una clave SSH, usa HTTPS:
-> ```bash
-> git clone https://github.com/Warzerp/rhythm_site.git
-> ```
-
-
 ---
 
-## 🗄 Instalar la Base de Datos
+## 🗄 Instalar la Base de Datos (Paso a Paso Exacto)
 
-### Paso 1 — Crear el entorno virtual Python
+Sigue estos comandos de terminal de forma secuencial y exacta:
 
-Desde la raíz del repositorio entra a la carpeta `scripts/`:
-
-```bash
+### 1. Abre tu terminal de comandos en la carpeta `scripts/`
+Si estás en la raíz del repositorio (`rhythm_site`), muévete a la carpeta `scripts`:
+```powershell
 cd scripts
+```
+
+### 2. Crea el entorno virtual de Python (`venv`)
+Ejecuta el comando para crear el entorno virtual en esta ubicación:
+```powershell
 python -m venv venv
 ```
 
-Activa el entorno virtual:
+### 3. Activa el entorno virtual (`venv`)
+Dependiendo de tu sistema operativo y shell, ejecuta:
 
-- **Windows:**
-  ```bash
-  venv\Scripts\activate
-  ```
-- **Linux / Mac:**
-  ```bash
-  source venv/bin/activate
-  ```
+*   **En Windows (PowerShell - Recomendado):**
+    ```powershell
+    .\venv\Scripts\Activate.ps1
+    ```
+*   **En Windows (Símbolo del sistema / cmd):**
+    ```cmd
+    .\venv\Scripts\activate.bat
+    ```
+*   **En Linux / macOS:**
+    ```bash
+    source venv/bin/activate
+    ```
 
-Instala las dependencias:
+Una vez activo, verás `(venv)` al inicio de la línea de tu terminal.
 
-```bash
-pip install psycopg2-binary tqdm
+### 4. Instalar las dependencias necesarias
+Instala las librerías necesarias del proyecto especificando la ruta al archivo `requirements.txt` ubicado en la raíz del espacio de trabajo:
+```powershell
+pip install -r ..\..\requirements.txt
 ```
 
-### Paso 2 — Ejecutar el pipeline de creación
-
-Desde la carpeta `scripts/`, ejecuta:
-
-```bash
-bash pipelines/01-create-database/execute_command.sh
+### 5. Ejecutar la creación de la base de datos (DDL)
+Ejecuta el script de automatización DDL de Python. **Reemplaza `"040922"` por tu contraseña real de PostgreSQL**:
+```powershell
+python .\pipelines\01-create-database\01-sql-ddl-script-auto.py --sql-dir .\ddl --user postgres --password "040922" --host localhost --port 5432
 ```
 
-Este script ejecuta automáticamente y en orden:
+### 6. Ejecutar la inserción de datos de prueba (DML)
+Ejecuta el script de inserción de datos de Python. **Reemplaza `"040922"` por tu contraseña real de PostgreSQL**:
+```powershell
+python .\pipelines\02-insert-data\02-sql-dml-insert-auto.py --data-dir .\data --user postgres --password "040922" --host localhost --port 5432
+```
 
-| Orden | Acción |
-|-------|--------|
-| 1° | Crea la base de datos `rhythm_site` y todas las tablas (DDL) |
-| 2° | Inserta todos los datos de prueba (DML) |
+---
 
-> **Parámetros por defecto del pipeline:**
-> - Host: `localhost`
-> - Puerto: `5432`
-> - Usuario: `postgres`
-> - Contraseña: reemplaza `"*"` en el `.sh` por tu contraseña real de PostgreSQL
+## 🚀 Ejecutar el Servidor Backend (FastAPI + Uvicorn)
+
+Una vez que la base de datos esté lista, inicia el servidor de la API:
+
+### 1. Muévete a la carpeta del backend
+Desde la misma terminal donde tienes el entorno virtual `(venv)` activado en la carpeta `scripts/`, sube de nivel y entra en `backend`:
+```powershell
+cd ../../backend
+```
+
+### 2. Inicia el servidor de Uvicorn
+Ejecuta el comando para iniciar el servidor de desarrollo local:
+```powershell
+python -m uvicorn main:app --host 127.0.0.1 --port 8000 --reload
+```
+
+El backend estará disponible en `http://127.0.0.1:8000` y su documentación interactiva en `http://127.0.0.1:8000/docs`.
+
+---
+
+## 💻 Ejecutar el Frontend
+
+Para evitar restricciones de CORS del navegador al abrir archivos HTML locales directos, sirve el frontend a través de un servidor web local simple:
+
+### 1. Abre una nueva terminal en la carpeta `frontend/`
+Muévete a la carpeta `frontend` del proyecto:
+```powershell
+cd pruebas__sub/frontend
+```
+
+### 2. Inicia el servidor de prueba de Python
+Ejecuta un servidor web integrado en el puerto `8080`:
+```powershell
+python -m http.server 8080 --bind 127.0.0.1
+```
+
+### 3. Abre la aplicación en tu navegador
+Ingresa a la siguiente dirección en tu navegador:
+👉 **[http://127.0.0.1:8080/index.html](http://127.0.0.1:8080/index.html)**
+
+Desde ahí podrás registrarte, iniciar sesión, ver la cartelera de eventos, comprar tickets con control de stock y ver tu historial.
 
 ---
 
 ## 🔄 Reinstalación Completa
 
-Si necesitas borrar la base de datos y empezar desde cero, ejecuta en `psql` como superusuario:
+Si necesitas limpiar la base de datos y recrear todo el esquema desde cero, ejecuta en `psql` (o pgAdmin) como superusuario `postgres`:
 
 ```sql
-DROP DATABASE rhythm_site;
-DROP ROLE rhythm_admin;
+DROP DATABASE IF EXISTS rhythm_site;
+DROP ROLE IF EXISTS rol_usuario;
+DROP ROLE IF EXISTS rol_organizador;
+DROP ROLE IF EXISTS rol_admin;
 ```
 
-Luego vuelve al **Paso 2** del apartado anterior.
+Luego repite los **pasos 5 y 6** de la sección [Instalar la Base de Datos](#-instalar-la-base-de-datos-paso-a-paso-exacto).

@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mi Perfil — Rhythm Site</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">Rhythm<span>Site</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Eventos</a></li>
+        </ul>
+        <div id="nav-actions"></div>
+    </nav>
+
+    <main class="container" style="margin-top: 3rem;">
+        <div class="profile-header">
+            <div class="profile-avatar" id="avatar-icon">👤</div>
+            <div>
+                <h1 id="profile-fullname" style="font-size: 2rem; margin-bottom: 0.25rem;">Cargando usuario...</h1>
+                <p id="profile-nick" style="color: var(--text-muted); font-weight: 500;">@username</p>
+            </div>
+        </div>
+
+        <section class="detail-section">
+            <h2 style="margin-bottom: 2rem;">Mis Compras Recientes</h2>
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Orden ID</th>
+                            <th>Evento</th>
+                            <th>Ubicación</th>
+                            <th>Precio Unitario</th>
+                            <th>Cantidad</th>
+                            <th>Total Pagado</th>
+                            <th>Fecha de Compra</th>
+                            <th>Estado de Pago</th>
+                        </tr>
+                    </thead>
+                    <tbody id="history-table-body">
+                        <tr>
+                            <td colspan="8" style="text-align: center; color: var(--text-muted); padding: 2rem;">
+                                Buscando historial de compras...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/perfil.js"></script>
+</body>
+</html>
