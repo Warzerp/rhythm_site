@@ -91,9 +91,39 @@ GRANT EXECUTE ON PROCEDURE sp_actualizar_evento(INT, VARCHAR, TEXT, DATE, DATE, 
 GRANT EXECUTE ON PROCEDURE sp_eliminar_evento(INT) TO rol_organizador;
 
 -- =========================================
+-- PERMISOS: rol_organizador — vista materializada de ventas
+-- =========================================
+GRANT SELECT ON public.mv_resumen_ventas_evento TO rol_organizador;
+
+-- =========================================
 -- PERMISOS: rol_admin (Acceso Completo)
 -- =========================================
 GRANT ALL PRIVILEGES ON ALL TABLES IN SCHEMA public TO rol_admin;
 GRANT ALL PRIVILEGES ON ALL SEQUENCES IN SCHEMA public TO rol_admin;
 GRANT ALL PRIVILEGES ON ALL FUNCTIONS IN SCHEMA public TO rol_admin;
 GRANT ALL PRIVILEGES ON ALL PROCEDURES IN SCHEMA public TO rol_admin;
+
+-- =========================================
+-- USUARIOS DE LOGIN (app users)
+-- Se crean con contraseñas de ejemplo; cambiarlas en producción.
+-- =========================================
+DO $$
+BEGIN
+    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'app_usuario') THEN
+        CREATE USER app_usuario WITH PASSWORD 'usr_rhythm_2024' CONNECTION LIMIT 50;
+    END IF;
+
+    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'app_organizador') THEN
+        CREATE USER app_organizador WITH PASSWORD 'org_rhythm_2024' CONNECTION LIMIT 20;
+    END IF;
+
+    IF NOT EXISTS (SELECT FROM pg_catalog.pg_roles WHERE rolname = 'app_admin') THEN
+        CREATE USER app_admin WITH PASSWORD 'adm_rhythm_2024' CONNECTION LIMIT 10;
+    END IF;
+END
+$$;
+
+-- Asignar roles a los usuarios de login
+GRANT rol_usuario      TO app_usuario;
+GRANT rol_organizador  TO app_organizador;
+GRANT rol_admin        TO app_admin;
