@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rhythm Site — Vive el Ritmo en Vivo</title>
+    <meta name="description" content="Encuentra los mejores conciertos, festivales y eventos de tus artistas favoritos. Compra tus tickets de forma segura.">
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+
+    <nav>
+        <a href="index.html" class="logo">Rhythm<span>Site</span></a>
+        <ul class="nav-links">
+            <li><a href="index.html">Eventos</a></li>
+        </ul>
+        <div id="nav-actions">
+            <!-- Dynamic button injected by api.js -->
+        </div>
+    </nav>
+
+    <header class="hero">
+        <h1>Conéctate con el poder de la música en vivo</h1>
+        <p>Explora, vibra y asegura tus entradas para los festivales y conciertos más cotizados del momento.</p>
+    </header>
+
+    <main class="container">
+        <h2 style="font-size: 2rem; margin-bottom: 2rem;">Próximos Eventos</h2>
+        
+        <div id="events-loader" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+            Cargando el cartel musical...
+        </div>
+
+        <div id="events-grid" class="events-grid" style="display: none;">
+            <!-- Event cards injected by home.js -->
+        </div>
+    </main>
+
+    <script src="js/api.js"></script>
+    <script src="js/home.js"></script>
+</body>
+</html>

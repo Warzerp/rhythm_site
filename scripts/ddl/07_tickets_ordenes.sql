@@ -26,5 +26,7 @@ CREATE TABLE ordenes (
     fecha_compra DATE,
     estado_pago  VARCHAR(50),
     usuario_id   INT,
-    FOREIGN KEY (usuario_id) REFERENCES usuarios(id)
+    ticket_id    INT,
+    FOREIGN KEY (usuario_id) REFERENCES usuarios(id),
+    FOREIGN KEY (ticket_id)  REFERENCES ticket(id)
 );
