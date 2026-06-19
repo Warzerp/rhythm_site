@@ -114,7 +114,7 @@ async function buyTicket(ticketId) {
     const qty = parseInt(document.getElementById(`qty-${ticketId}`).innerText);
     
     try {
-        const response = await fetch(`${API_BASE}/comprar`, {
+        const response = await fetch(`${API_BASE}/ordenes/comprar`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({

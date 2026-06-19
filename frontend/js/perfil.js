@@ -19,7 +19,7 @@ async function loadPurchaseHistory(userId) {
     const tbody = document.getElementById("history-table-body");
     
     try {
-        const response = await fetch(`${API_BASE}/historial/${userId}`);
+        const response = await fetch(`${API_BASE}/ordenes/historial/${userId}`);
         if (!response.ok) throw new Error("Error obteniendo historial");
         
         const history = await response.json();
