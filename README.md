@@ -90,7 +90,7 @@ python -m venv venv
  ejecuta:
 *   **En Windows (Símbolo del sistema / cmd):**
     ```cmd
-    .\venv\Scripts\activate
+    venv\Scripts\activate
     
 
 
@@ -98,20 +98,20 @@ Una vez activo, verás `(venv)` al inicio de la línea de tu terminal.
 
 ### 4. Instalar las dependencias necesarias
 Instala las librerías necesarias del proyecto especificando la ruta al archivo `requirements.txt` ubicado en la raíz del espacio de trabajo:
-```powershell
+```cmd
 pip install -r ..\..\requirements.txt
 ```
 
 ### 5. Ejecutar la creación de la base de datos (DDL)
-Ejecuta el script de automatización DDL de Python. **Reemplaza `"040922"` por tu contraseña real de PostgreSQL**:
+Ejecuta el script de automatización DDL de Python. **Reemplaza `"*"` por tu contraseña real de PostgreSQL**:
 ```powershell
-python .\pipelines\01-create-database\01-sql-ddl-script-auto.py --sql-dir .\ddl --user postgres --password "040922" --host localhost --port 5432
+python .\pipelines\01-create-database\01-sql-ddl-script-auto.py --sql-dir .\ddl --user postgres --password "*" --host localhost --port 5432
 ```
 
 ### 6. Ejecutar la inserción de datos de prueba (DML)
-Ejecuta el script de inserción de datos de Python. **Reemplaza `"040922"` por tu contraseña real de PostgreSQL**:
+Ejecuta el script de inserción de datos de Python. **Reemplaza `"*"` por tu contraseña real de PostgreSQL**:
 ```powershell
-python .\pipelines\02-insert-data\02-sql-dml-insert-auto.py --data-dir .\data --user postgres --password "040922" --host localhost --port 5432
+python .\pipelines\02-insert-data\02-sql-dml-insert-auto.py --data-dir .\data --user postgres --password "*" --host localhost --port 5432
 ```
 
 ---
@@ -142,7 +142,7 @@ Para evitar restricciones de CORS del navegador al abrir archivos HTML locales d
 
 ### 1. Abre una nueva terminal en la carpeta `frontend/`
 Muévete a la carpeta `frontend` del proyecto:
-```powershell
+```cmd
 cd pruebas__sub/frontend
 ```
 
