@@ -30,7 +30,7 @@ Plataforma web para la gestión y venta de entradas a eventos musicales en Colom
 ## 📁 Estructura del Proyecto
 
 ```
-pruebas__sub/
+rhythm_site/
 ├── requirements.txt                  # Librerías de todo el proyecto (FastAPI, psycopg2, etc.)
 ├── rhythm_site/                      # Carpeta principal de la base de datos
 │   ├── scripts/
