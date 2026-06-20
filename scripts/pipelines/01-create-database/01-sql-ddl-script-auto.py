@@ -26,6 +26,7 @@ SQL_FILES = [
     ("10_triggers.sql",               "Disparadores y auditoría",      "rhythm_site"),
     ("11_indices.sql",                "Índices de rendimiento",        "rhythm_site"),
     ("12_roles_permisos.sql",         "Roles y permisos de seguridad", "rhythm_site"),
+    ("13_seguridad_bd.sql",           "Seguridad avanzada de BD",      "rhythm_site"),  # ← NUEVO
 ]
 
 # ============================================

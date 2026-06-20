@@ -7,11 +7,21 @@ from dotenv import load_dotenv
 # Cargar variables de entorno desde .env si existe
 load_dotenv()
 
+# ─── Validación de variables de entorno críticas ─────────────────────────────
+_REQUIRED_ENV = ["DB_PASSWORD"]
+for _var in _REQUIRED_ENV:
+    if not os.getenv(_var):
+        raise RuntimeError(
+            f"[SEGURIDAD] La variable de entorno '{_var}' no está definida. "
+            f"Crea un archivo .env con las credenciales de la base de datos."
+        )
+# ─────────────────────────────────────────────────────────────────────────────
+
 DB_CONFIG = {
     "host": os.getenv("DB_HOST", "localhost"),
     "port": int(os.getenv("DB_PORT", "5432")),
     "user": os.getenv("DB_USER", "postgres"),
-    "password": os.getenv("DB_PASSWORD", "040922"),
+    "password": os.getenv("DB_PASSWORD"),      # Sin default — debe estar en .env
     "database": os.getenv("DB_DATABASE", "rhythm_site")
 }
 
