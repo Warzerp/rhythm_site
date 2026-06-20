@@ -19,7 +19,7 @@ async function loadPurchaseHistory(userId) {
     const tbody = document.getElementById("history-table-body");
     
     try {
-        const response = await fetch(`${API_BASE}/ordenes/historial/${userId}`);
+        const response = await authFetch(`${API_BASE}/ordenes/historial/${userId}`);
         if (!response.ok) throw new Error("Error obteniendo historial");
         
         const history = await response.json();
@@ -37,16 +37,16 @@ async function loadPurchaseHistory(userId) {
         
         tbody.innerHTML = history.map(item => `
             <tr>
-                <td>#${item.orden_id}</td>
-                <td style="font-weight: 500;">${item.nombre_evento}</td>
-                <td><span class="card-badge" style="position: static; font-size: 0.75rem;">${item.tipo_ticket}</span></td>
-                <td>$${item.precio_unitario}</td>
-                <td>${item.cantidad}</td>
-                <td style="font-weight: 600; color: var(--accent);">$${item.total_pagado}</td>
+                <td>#${escapeHTML(String(item.orden_id))}</td>
+                <td style="font-weight: 500;">${escapeHTML(item.nombre_evento)}</td>
+                <td><span class="card-badge" style="position: static; font-size: 0.75rem;">${escapeHTML(item.tipo_ticket)}</span></td>
+                <td>$${escapeHTML(String(item.precio_unitario))}</td>
+                <td>${escapeHTML(String(item.cantidad))}</td>
+                <td style="font-weight: 600; color: var(--accent);">$${escapeHTML(String(item.total_pagado))}</td>
                 <td>${new Date(item.fecha_compra).toLocaleDateString()}</td>
                 <td>
                     <span class="status-badge status-paid">
-                        ${item.estado_pago.toUpperCase()}
+                        ${escapeHTML(item.estado_pago.toUpperCase())}
                     </span>
                 </td>
             </tr>

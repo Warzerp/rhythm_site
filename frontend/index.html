@@ -20,21 +20,42 @@
     </nav>
 
     <header class="hero">
-        <h1>Conéctate con el poder de la música en vivo</h1>
-        <p>Explora, vibra y asegura tus entradas para los festivales y conciertos más cotizados del momento.</p>
+        <div class="hero-content">
+            <h1>Conéctate con el poder de la música en vivo</h1>
+            <p>Explora, vibra y asegura tus entradas para los festivales y conciertos más cotizados del momento de forma segura y directa.</p>
+        </div>
     </header>
 
     <main class="container">
-        <h2 style="font-size: 2rem; margin-bottom: 2rem;">Próximos Eventos</h2>
+        <h2 class="section-title">Próximos Eventos</h2>
         
-        <div id="events-loader" style="text-align: center; padding: 3rem; color: var(--text-muted);">
-            Cargando el cartel musical...
+        <div id="events-loader" style="text-align: center; padding: 5rem; color: var(--text-muted); font-size: 1.1rem; font-weight: 500;">
+            <div style="margin-bottom: 1rem; font-size: 2rem;">⚡</div>
+            Sincronizando el cartel musical...
         </div>
 
         <div id="events-grid" class="events-grid" style="display: none;">
             <!-- Event cards injected by home.js -->
         </div>
     </main>
+
+    <footer style="border-top: 1px solid var(--border-glass); padding: 4rem 2rem; background: rgba(6, 6, 12, 0.9); text-align: center; color: var(--text-muted); font-size: 0.95rem;">
+        <div style="max-width: 1200px; margin: 0 auto; display: flex; flex-direction: column; gap: 2rem;">
+            <div style="font-family: var(--font-heading); font-size: 1.5rem; font-weight: 900; background: linear-gradient(135deg, #fff, var(--primary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; display: inline-block;">
+                Rhythm<span>Site</span>
+            </div>
+            <p style="max-width: 500px; margin: 0 auto;">La plataforma definitiva para la gestión, compra e interactividad con los eventos musicales de mayor relevancia.</p>
+            <div style="display: flex; justify-content: center; gap: 2rem; margin: 1rem 0;">
+                <a href="#" style="color: var(--text-muted);">Privacidad</a>
+                <a href="#" style="color: var(--text-muted);">Términos y condiciones</a>
+                <a href="#" style="color: var(--text-muted);">Contacto</a>
+                <a href="#" style="color: var(--text-muted);">Soporte</a>
+            </div>
+            <div style="font-size: 0.85rem; border-top: 1px solid rgba(255,255,255,0.03); padding-top: 2rem; margin-top: 1rem;">
+                &copy; 2026 Rhythm Site. Todos los derechos reservados. Realizado para el proyecto de Base de Datos II.
+            </div>
+        </div>
+    </footer>
 
     <script src="js/api.js"></script>
     <script src="js/home.js"></script>
