@@ -1,20 +1,48 @@
-from fastapi import FastAPI, Response, status
+import os
+import logging
+from fastapi import FastAPI, Request, Response, status
 from fastapi.middleware.cors import CORSMiddleware
-from routers import eventos, usuarios, tickets, ordenes
+from slowapi import Limiter, _rate_limit_exceeded_handler
+from slowapi.util import get_remote_address
+from slowapi.errors import RateLimitExceeded
 from database import get_db
+
+logger = logging.getLogger(__name__)
+
+# ─── Rate Limiter ─────────────────────────────────────────────────────────────
+# Limita peticiones por IP. Los límites específicos se aplican en cada endpoint.
+limiter = Limiter(key_func=get_remote_address, default_limits=["200/minute"])
+# ─────────────────────────────────────────────────────────────────────────────
 
 app = FastAPI(
     title="Rhythm Site API",
     description="API para la plataforma de eventos musicales Rhythm Site",
     version="1.0.0",
+    # Desactiva docs en producción cambiando a None
+    docs_url="/docs",
+    redoc_url="/redoc",
 )
+
+# Registrar el limiter y su manejador de errores
+app.state.limiter = limiter
+app.add_exception_handler(RateLimitExceeded, _rate_limit_exceeded_handler)
+
+# ─── CORS: Restringir orígenes permitidos ────────────────────────────────────
+# En producción, define ALLOWED_ORIGINS en .env, p.ej.:
+# ALLOWED_ORIGINS=https://tudominio.com,https://www.tudominio.com
+_raw_origins = os.getenv("ALLOWED_ORIGINS", "http://localhost,http://127.0.0.1")
+ALLOWED_ORIGINS = [o.strip() for o in _raw_origins.split(",") if o.strip()]
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"],
-    allow_methods=["*"],
-    allow_headers=["*"],
+    allow_origins=ALLOWED_ORIGINS,   # ← solo orígenes explícitos, nunca "*"
+    allow_credentials=True,
+    allow_methods=["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+    allow_headers=["Content-Type", "Authorization"],
 )
+# ─────────────────────────────────────────────────────────────────────────────
+
+from routers import eventos, usuarios, tickets, ordenes
 
 app.include_router(eventos.router, prefix="/api")
 app.include_router(usuarios.router, prefix="/api")
@@ -43,7 +71,9 @@ def health_check(response: Response):
                 cur.fetchone()
         health["services"]["database"] = "ok"
     except Exception as e:
+        # ─── Seguridad: loggear internamente, nunca exponer detalles al cliente
+        logger.error("Database health check failed: %s", e)
         health["status"] = "unhealthy"
-        health["services"]["database"] = f"error: {str(e)}"
+        health["services"]["database"] = "unavailable"   # mensaje genérico
         response.status_code = status.HTTP_503_SERVICE_UNAVAILABLE
     return health

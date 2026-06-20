@@ -18,15 +18,22 @@ async function loadEventDetails(id) {
         
         const event = await response.json();
         
-        document.title = `${event.nombre_evento} — Rhythm Site`;
+        // Establecer imagen premium dinámica en el banner
+        const imageIndex = (event.evento_id % 3) + 1;
+        const bannerImg = document.getElementById("event-banner-img");
+        if (bannerImg) {
+            bannerImg.src = `img/event${imageIndex}.png`;
+        }
+        
+        document.title = `${escapeHTML(event.nombre_evento)} — Rhythm Site`;
         document.getElementById("event-title").innerText = event.nombre_evento;
         document.getElementById("event-type-badge").innerText = event.tipo_evento;
         document.getElementById("event-description").innerText = event.descripcion || "Este evento no cuenta con una descripción detallada en este momento.";
         
         document.getElementById("event-meta").innerHTML = `
             <span>📅 Fecha: ${new Date(event.fecha_inicio).toLocaleDateString()}</span>
-            <span>📍 Lugar: ${event.nombre_venue} (${event.ciudad}, ${event.departamento})</span>
-            <span>🏢 Organizador: ${event.nombre_organizador}</span>
+            <span>📍 Lugar: ${escapeHTML(event.nombre_venue)} (${escapeHTML(event.ciudad)}, ${escapeHTML(event.departamento)})</span>
+            <span>🏢 Organizador: ${escapeHTML(event.nombre_organizador)}</span>
         `;
         
         const artistsContainer = document.getElementById("artists-container");
@@ -36,7 +43,7 @@ async function loadEventDetails(id) {
             artistsContainer.innerHTML = event.artistas.map(art => `
                 <div class="artist-chip">
                     <div class="artist-img">🎙️</div>
-                    <span style="font-weight: 500;">${art.nombre_artistico}</span>
+                    <span style="font-weight: 500;">${escapeHTML(art.nombre_artistico)}</span>
                 </div>
             `).join('');
         }
@@ -64,17 +71,17 @@ async function loadEventTickets(id) {
         container.innerHTML = tickets.map(ticket => `
             <div class="ticket-row">
                 <div class="ticket-info">
-                    <h4>${ticket.tipo_ticket}</h4>
-                    <span style="font-size: 0.8rem; color: var(--text-muted);">Stock disponible: ${ticket.stock_disponible}</span>
+                    <h4>${escapeHTML(ticket.tipo_ticket)}</h4>
+                    <span style="font-size: 0.8rem; color: var(--text-muted);">Stock disponible: ${escapeHTML(String(ticket.stock_disponible))}</span>
                 </div>
-                <div class="ticket-price">$${ticket.precio}</div>
+                <div class="ticket-price">$${escapeHTML(String(ticket.precio))}</div>
                 <div style="display: flex; flex-direction: column; align-items: flex-end; gap: 0.5rem;">
                     <div class="qty-picker">
-                        <button class="qty-btn" onclick="updateQty(${ticket.ticket_id}, -1)">-</button>
-                        <span class="qty-val" id="qty-${ticket.ticket_id}">1</span>
-                        <button class="qty-btn" onclick="updateQty(${ticket.ticket_id}, 1, ${ticket.stock_disponible})">+</button>
+                        <button class="qty-btn" onclick="updateQty(${parseInt(ticket.ticket_id)}, -1)">-</button>
+                        <span class="qty-val" id="qty-${parseInt(ticket.ticket_id)}">1</span>
+                        <button class="qty-btn" onclick="updateQty(${parseInt(ticket.ticket_id)}, 1, ${parseInt(ticket.stock_disponible)})">+</button>
                     </div>
-                    <button class="btn btn-accent" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="buyTicket(${ticket.ticket_id})">Comprar</button>
+                    <button class="btn btn-accent" style="padding: 0.4rem 0.8rem; font-size: 0.8rem;" onclick="buyTicket(${parseInt(ticket.ticket_id)})">Comprar</button>
                 </div>
             </div>
         `).join('');
@@ -114,13 +121,12 @@ async function buyTicket(ticketId) {
     const qty = parseInt(document.getElementById(`qty-${ticketId}`).innerText);
     
     try {
-        const response = await fetch(`${API_BASE}/ordenes/comprar`, {
+        const response = await authFetch(`${API_BASE}/ordenes/comprar`, {
             method: "POST",
-            headers: { "Content-Type": "application/json" },
             body: JSON.stringify({
-                usuario_id: user.id,
                 ticket_id: ticketId,
                 cantidad: qty
+                // usuario_id ya NO se envía — el backend lo extrae del JWT
             })
         });
         

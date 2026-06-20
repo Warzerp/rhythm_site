@@ -1,4 +1,17 @@
 fastapi==0.111.0
 uvicorn[standard]==0.29.0
 python-multipart==0.0.9
-# psycopg2 ya instalado en el venv existente del proyecto
+python-dotenv>=1.2.0
+
+# Seguridad — contraseñas
+# bcrypt 5.x no es compatible con passlib 1.7.4, se fija a 4.2.1
+passlib[bcrypt]>=1.7.4
+bcrypt==4.2.1
+
+# Seguridad — JWT
+python-jose[cryptography]>=3.5.0
+
+# Seguridad — Rate Limiting
+slowapi>=0.1.10
+
+# psycopg2 instalado manualmente en el venv del proyecto
