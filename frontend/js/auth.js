@@ -35,7 +35,10 @@ async function handleLogin(e) {
             return;
         }
         
+        // Guardar token JWT y datos del usuario en sesión local
+        Session.setToken(data.access_token);
         Session.setUser(data.usuario);
+
         showToast("Inicio de sesión exitoso. ¡Bienvenido!", "success");
         setTimeout(() => {
             window.location.href = "index.html";

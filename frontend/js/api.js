@@ -1,5 +1,18 @@
 const API_BASE = "http://localhost:8000/api";
 
+// ─── Seguridad: Escape de HTML para prevenir XSS ────────────────────────────
+// SIEMPRE usa esta función antes de insertar datos de la API en innerHTML.
+function escapeHTML(str) {
+    if (str === null || str === undefined) return '';
+    return String(str)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+}
+// ────────────────────────────────────────────────────────────────────────────
+
 // Helper to show modern status toasts
 function showToast(message, type = "success") {
     let toast = document.getElementById("toast-notification");
@@ -18,7 +31,7 @@ function showToast(message, type = "success") {
     }, 4000);
 }
 
-// User session management
+// User session management (con soporte para JWT)
 const Session = {
     getUser() {
         const u = localStorage.getItem("rhythm_user");
@@ -27,13 +40,52 @@ const Session = {
     setUser(user) {
         localStorage.setItem("rhythm_user", JSON.stringify(user));
     },
+    // ─── JWT ─────────────────────────────────────────────────────────────────
+    getToken() {
+        return localStorage.getItem("rhythm_token") || null;
+    },
+    setToken(token) {
+        localStorage.setItem("rhythm_token", token);
+    },
+    // ─────────────────────────────────────────────────────────────────────────
     clear() {
         localStorage.removeItem("rhythm_user");
+        localStorage.removeItem("rhythm_token");
     },
     isLoggedIn() {
-        return this.getUser() !== null;
+        return this.getToken() !== null && this.getUser() !== null;
     }
 };
+
+/**
+ * authFetch — wrapper de fetch que inyecta automáticamente el JWT.
+ * Úsalo en lugar de fetch() para rutas protegidas.
+ *
+ * Ejemplo:
+ *   const res = await authFetch(`${API_BASE}/ordenes/comprar`, {
+ *       method: "POST",
+ *       body: JSON.stringify({ ticket_id: 1, cantidad: 2 })
+ *   });
+ */
+async function authFetch(url, options = {}) {
+    const token = Session.getToken();
+    const headers = {
+        "Content-Type": "application/json",
+        ...(options.headers || {}),
+        ...(token ? { "Authorization": `Bearer ${token}` } : {}),
+    };
+    const response = await fetch(url, { ...options, headers });
+
+    // Si el backend responde 401, la sesión expiró — limpiar y redirigir
+    if (response.status === 401) {
+        Session.clear();
+        showToast("Tu sesión ha expirado. Inicia sesión de nuevo.", "error");
+        setTimeout(() => { window.location.href = "auth.html"; }, 1500);
+    }
+
+    return response;
+}
+
 
 // Auto-update common navigation links based on user status
 function updateNav() {
